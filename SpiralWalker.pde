@@ -1,44 +1,62 @@
 // Global Variables
-int UN_RANDOM_BIAS = 2; // A HIGHER NUMBER FORCES THE SPIRAL TO BE LESS RANDOM
-int guidedStepsCapIncrement = 10; // This increment causes the spiral to grow in size
-int guidedStepsCap = 10;
-
+int UN_RANDOM_BIAS = 0; // A HIGHER NUMBER FORCES THE SPIRAL TO BE LESS RANDOM
+float guidedAngleIncrement = 15; // This increment causes the spiral to grow in size
+int guidedStepsCap = 20;
+int guidedStepsCapIncrement = 1;
+float speed = 0.6;
 
 class RandomSpiralWalker{
   float x=width/2;
   float y=height/2;
   
   
-  int guidedDir = 0;
+  float guidedDirAngle = 0;
   int guidedStepsCnt = 0;
-  
   //direction set in a spiral way to make it easy to toggle in a spiral way in the code
-  int dir[][] = {{-1,-1},{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1}};
+  float dir[] = {speed*sin(guidedDirAngle*3.1415/180),speed*cos(guidedDirAngle*3.1415/180)};
   
   void walk(){
-    // choose one of 8 random directions or take the guided dir 
-    int choice = int(random(8+UN_RANDOM_BIAS));
+    // decide whether it'll be guided or not
+    int guidedOrNot = int(random(2+UN_RANDOM_BIAS));
     
-    // prob = UN_RANDOM_BIAS/(8+UN_RANDOM_BIAS), so more probable
-    if(choice>7){
+    float dirAngle;
+    
+    // prob = UN_RANDOM_BIAS/(2+UN_RANDOM_BIAS), so more probable
+    if(guidedOrNot>0){
       
-      guidedStepsCnt++;
       
       // if number of guided steps are done, then alternate guided dir
       if(guidedStepsCnt>guidedStepsCap){
         guidedStepsCnt=0;
-        guidedDir=(guidedDir+1)%8; //go to next dir
-        guidedStepsCap+=guidedStepsCapIncrement; // increase the guided dir step range
+        guidedDirAngle = (guidedDirAngle + guidedAngleIncrement) % 360; //change dir
+        guidedStepsCap += guidedStepsCapIncrement; // increase the guided dir step range
       }
       
+      guidedStepsCnt++;
+      
+      
+      
+      dirAngle = guidedDirAngle;
+      
+      dir[0] = speed*sin(dirAngle*3.1415/180);
+      dir[1] = speed*cos(dirAngle*3.1415/180);
+      
       // update location
-      x += dir[guidedDir][0];
-      y += dir[guidedDir][1];
+      x += dir[0];
+      y += dir[1];
     }
     else{ // otherwise just choose a random direction
-      // update location
-      x += dir[choice][0];
-      y += dir[choice][1];
+      // choose random direction
+      float choice = random(0,360);
+      
+      dirAngle = choice;
+      
+      dir[0] = speed*sin(dirAngle*3.1415/180);
+      dir[1] = speed*cos(dirAngle*3.1415/180);
+      
+      //update location
+      x += dir[0];
+      y += dir[1];
     }
     
   }
