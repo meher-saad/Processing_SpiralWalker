@@ -4,7 +4,7 @@ int guidedStepsCapIncrement = 10; // This increment causes the spiral to grow in
 int guidedStepsCap = 10;
 
 
-class SpiralWalker{
+class RandomSpiralWalker{
   float x=width/2;
   float y=height/2;
   
@@ -52,13 +52,13 @@ class SpiralWalker{
 }
 
 
-SpiralWalker sw;
+RandomSpiralWalker sw;
 
 void setup(){
   size(1200,800);
   frameRate(120);
   background(240);
-  sw = new SpiralWalker();
+  sw = new RandomSpiralWalker();
 }
 
 
