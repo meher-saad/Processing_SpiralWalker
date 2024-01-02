@@ -46,7 +46,6 @@ class RandomSpiralWalker{
       y += dir[1];
     }
     else{ // otherwise just choose a random direction
-      // choose random direction
       float choice = random(0,360);
       
       dirAngle = choice;
